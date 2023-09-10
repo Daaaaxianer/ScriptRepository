@@ -6,6 +6,7 @@
 import re
 from Bio.Seq import Seq
 from Bio import SeqIO
+import argparse
 
 def OldFa2NewFa(infa,ingff,ty='fasta'):
     Oid2Nid = {}
@@ -18,14 +19,33 @@ def OldFa2NewFa(infa,ingff,ty='fasta'):
             Oid2Nid[a[6]] = a[1]
     SeqList = []
     for seq_record in SeqIO.parse(infa,ty):
+        if seq_record.id not in Oid2Nid.keys(): continue
         print (seq_record.id,Oid2Nid[seq_record.id])
         seq_record.id = Oid2Nid[seq_record.id]
         seq_record.description = seq_record.id
         SeqList.append(seq_record)
     return SeqList
 if __name__ == "__main__":
-    CdsList = OldFa2NewFa("Vvinifera_145_Genoscope.12X.cds.fa","Vvi.new.gff")
-    SeqIO.write(CdsList,"Vvi.new.cds.fa","fasta")
-    PepList = OldFa2NewFa("Vvinifera_145_Genoscope.12X.protein.fa", "Vvi.new.gff")
-    SeqIO.write(PepList, "Vvi.new.pep.fa", "fasta")
+    # 定义命令行解析器对象
+    parser = argparse.ArgumentParser(description='Modify fasta sequence according to gff')
+
+    # 添加命令行参数
+    parser.add_argument("-v", "--version", action="version", version="%(prog)s 1.0")
+    parser.add_argument("fasta", type=str, help="fasta sequence filepath ")
+    parser.add_argument("gff", type=str, help="gff filepath ")
+    parser.add_argument("-o", "--outfasta", type=str, default='out',
+                        help="output file name (default: out)")
+    parser.add_argument("-t", "--type", type=str, default='fasta', help="output file type (default: fasta)")
+
+    # 解析命令行参数
+    args = parser.parse_args()
+
+    # 执行
+    seqList = OldFa2NewFa(args.fasta, args.gff)
+    SeqIO.write(seqList, args.outfasta, args.type)
+
+    # CdsList = OldFa2NewFa("Vvinifera_145_Genoscope.12X.cds.fa","Vvi.new.gff")
+    # SeqIO.write(CdsList,"Vvi.new.cds.fa","fasta")
+    # PepList = OldFa2NewFa("Vvinifera_145_Genoscope.12X.protein.fa", "Vvi.new.gff")
+    # SeqIO.write(PepList, "Vvi.new.pep.fa", "fasta")
 
