@@ -37,7 +37,7 @@ def process_gff3(gff3_file):
 
     # 5. 从group列 name字段中 提取 gene loc 和转录本 name
     # gff3_df['name'] = gff3_df['group'].str.extract(r'([\w.]+)\.')
-    gff3_df['loc'] = gff3_df['group'].str.split("Name=").str[1].str.split(".").str[0]
+    gff3_df['loc'] = gff3_df['group'].str.split("ID=").str[1].str.split(".").str[0]
     gff3_df['name'] = gff3_df['group'].str.split("Name=").str[1].str.split(";").str[0]
 
     # 6. 比较每个gene的转录本的长度差异，仅保留长度差异最大的转录本
@@ -98,7 +98,7 @@ if __name__ == '__main__':
     # 添加命令行参数
     parser.add_argument("-v", "--version", action="version", version="%(prog)s 1.0")
     parser.add_argument("gff3", type=str, help="Normal filepath of GFF3")
-    parser.add_argument("-s", "--species", type=str, default='species', help="Optional Species abbreviation (default: order)")
+    parser.add_argument("-s", "--species", type=str, default='species', help="Optional Species abbreviation (default: species)")
 
     # 解析命令行参数
     args = parser.parse_args()
