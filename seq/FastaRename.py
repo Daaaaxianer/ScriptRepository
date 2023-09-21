@@ -33,8 +33,8 @@ if __name__ == "__main__":
     parser.add_argument("-v", "--version", action="version", version="%(prog)s 1.0")
     parser.add_argument("fasta", type=str, help="fasta sequence filepath ")
     parser.add_argument("gff", type=str, help="gff filepath ")
-    parser.add_argument("-o", "--outfasta", type=str, default='out',
-                        help="output file name (default: out)")
+    parser.add_argument("-o", "--outfasta", type=str, default='out.fasta',
+                        help="output file name (default: out.fasta)")
     parser.add_argument("-t", "--type", type=str, default='fasta', help="output file type (default: fasta)")
 
     # 解析命令行参数
