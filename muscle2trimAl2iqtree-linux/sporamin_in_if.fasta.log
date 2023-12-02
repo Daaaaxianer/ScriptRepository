@@ -1,0 +1,65 @@
+IQ-TREE multicore version 1.6.12 for Windows 64-bit built Aug 15 2019
+Developed by Bui Quang Minh, Nguyen Lam Tung, Olga Chernomor,
+Heiko Schmidt, Dominik Schrempf, Michael Woodhams.
+
+Host:    LAPTOP-HPIM2IQN (AVX2, FMA3, 7 GB RAM)
+Command: iqtree -s sporamin_in_if.fasta
+Seed:    210163 (Using SPRNG - Scalable Parallel Random Number Generator)
+Time:    Wed Dec 18 18:44:03 2019
+Kernel:  AVX+FMA - 1 threads (8 CPU cores detected)
+
+HINT: Use -nt option to specify number of threads because your CPU has 8 cores!
+HINT: -nt AUTO will automatically determine the best number of threads to use.
+
+Reading alignment file sporamin_in_if.fasta ... Fasta format detected
+ERROR: Sequence if00g00201 contains not enough characters (204)
+ERROR: Sequence if11g01938 contains not enough characters (199)
+ERROR: Sequence if00g01071 contains not enough characters (202)
+ERROR: Sequence if00g00577 contains too many characters (394)
+ERROR: Sequence if00g00205 contains not enough characters (203)
+ERROR: Sequence if01g00210 contains too many characters (212)
+ERROR: Sequence if13g00531 contains not enough characters (205)
+ERROR: Sequence if11g01944 contains not enough characters (197)
+ERROR: Sequence if02g00136 contains too many characters (210)
+ERROR: Sequence if02g00459 contains too many characters (210)
+ERROR: Sequence if11g02029 contains not enough characters (204)
+ERROR: Sequence if00g00490 contains not enough characters (197)
+ERROR: Sequence if11g01941 contains not enough characters (207)
+ERROR: Sequence if02g00461 contains too many characters (215)
+ERROR: Sequence if01g00205 contains too many characters (209)
+ERROR: Sequence if13g00530 contains not enough characters (173)
+ERROR: Sequence if00g00518 contains not enough characters (176)
+ERROR: Sequence if11g01908 contains too many characters (214)
+ERROR: Sequence if01g00219 contains too many characters (220)
+ERROR: Sequence if01g00214 contains too many characters (219)
+ERROR: Sequence if00g00204 contains not enough characters (204)
+ERROR: Sequence if11g01929 contains too many characters (209)
+ERROR: Sequence if11g01930 contains too many characters (223)
+ERROR: Sequence if01g00216 contains too many characters (220)
+ERROR: Sequence if11g01942 contains not enough characters (197)
+ERROR: Sequence if00g00522 contains too many characters (219)
+ERROR: Sequence if00g00202 contains not enough characters (205)
+ERROR: Sequence if13g00529 contains not enough characters (204)
+ERROR: Sequence if11g01928 contains not enough characters (204)
+ERROR: Sequence if11g02025 contains too many characters (228)
+ERROR: Sequence if00g00576 contains too many characters (336)
+ERROR: Sequence if13g00534 contains too many characters (258)
+ERROR: Sequence if11g01927 contains not enough characters (200)
+ERROR: Sequence if11g02028 contains too many characters (215)
+ERROR: Sequence if00g01741 contains not enough characters (182)
+ERROR: Sequence if11g01940 contains not enough characters (202)
+ERROR: Sequence if13g00532 contains too many characters (209)
+ERROR: Sequence if00g00572 contains too many characters (214)
+ERROR: Sequence if13g00533 contains not enough characters (204)
+ERROR: Sequence if11g02030 contains not enough characters (202)
+ERROR: Sequence if00g01303 contains too many characters (262)
+ERROR: Sequence if02g00460 contains too many characters (221)
+ERROR: Sequence if13g00535 contains too many characters (210)
+ERROR: Sequence if00g00520 contains not enough characters (181)
+ERROR: Sequence if01g00200 contains too many characters (211)
+ERROR: Sequence if00g00519 contains too many characters (209)
+ERROR: Sequence if01g00217 contains too many characters (220)
+ERROR: Sequence if00g00203 contains not enough characters (204)
+ERROR: Sequence if00g01070 contains not enough characters (205)
+ERROR: Sequence if11g01934 contains too many characters (297)
+ERROR: 
