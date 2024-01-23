@@ -29,16 +29,21 @@ def process_gff3(gff3_file):
     # 2. 使用布尔索引筛选出不以"#"开头的行并删除
     gff3_df = gff3_df[~gff3_df['seqname'].str.startswith("#")]
 
-    # 3. 删除"ChrSy"和"ChrUn"这两个特定的seqname的行
-    gff3_df = gff3_df[~gff3_df['seqname'].isin(['ChrSy', 'ChrUn', 'chrUn'])]
+    # 3. 删除某些无效染色体seqname的行
+    values_to_remove = ['ChrSy', 'ChrUn', 'chrUn']
+
+    gff3_df = gff3_df[~gff3_df['seqname'].isin(values_to_remove)]
+    gff3_df = gff3_df[~(gff3_df['seqname'].str.endswith(('_random',)))] # 可根据实际情况增减
+
+    # gff3_df = gff3_df[~gff3_df['seqname'].isin(['ChrSy', 'ChrUn', 'chrUn'])]
 
     # 4. 只保留feature为"mRNA"的行，并重置索引
     gff3_df = gff3_df[gff3_df['feature'] == 'mRNA'].reset_index(drop=True)
 
     # 5. 从group列 name字段中 提取 gene loc 和转录本 name
     # gff3_df['name'] = gff3_df['group'].str.extract(r'([\w.]+)\.')
-    gff3_df['loc'] = gff3_df['group'].str.split("ID=").str[1].str.split(".").str[0]
-    gff3_df['name'] = gff3_df['group'].str.split("Name=").str[1].str.split(";").str[0]
+    gff3_df['loc'] = gff3_df['group'].str.split("Parent=").str[1].str.split(".").str[0] ## 每次均需要核对
+    gff3_df['name'] = gff3_df['group'].str.split("Name=").str[1].str.split(";").str[0] ## 每次均需要核对
 
     # 6. 比较每个gene的转录本的长度差异，仅保留长度差异最大的转录本
     gff3_df['length_diff'] = gff3_df['end'] - gff3_df['start']
@@ -48,6 +53,8 @@ def process_gff3(gff3_file):
     gff3_df['start'] = gff3_df['start'].astype(int)
     gff3_df['end'] = gff3_df['end'].astype(int)
     gff3_df['length_diff'] = gff3_df['length_diff'].astype(int)
+
+    print(gff3_df)
 
     return gff3_df
 
@@ -98,7 +105,7 @@ if __name__ == '__main__':
     # 添加命令行参数
     parser.add_argument("-v", "--version", action="version", version="%(prog)s 1.0")
     parser.add_argument("gff3", type=str, help="Normal filepath of GFF3")
-    parser.add_argument("-s", "--species", type=str, default='species', help="Optional Species abbreviation (default: species)")
+    parser.add_argument("-s", "--species", type=str, default='species', help="Optional Species abbreviation (default: order)")
 
     # 解析命令行参数
     args = parser.parse_args()
