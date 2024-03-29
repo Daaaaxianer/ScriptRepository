@@ -21,7 +21,7 @@ def OldFa2NewFa(infa,ingff,ty='fasta'):
     for seq_record in SeqIO.parse(infa,ty):
         print(seq_record.description)
         b = re.split('[\t]|[\=]',seq_record.description) ## 每次均需要核对
-        selectId = b[2]  ## 每次均需要核对
+        selectId = b[1]  ## 每次均需要核对
         if selectId not in Oid2Nid.keys(): 
             print( "Wrong select !!!" )
             continue
