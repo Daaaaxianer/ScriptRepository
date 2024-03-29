@@ -105,7 +105,7 @@ if __name__ == '__main__':
     # 添加命令行参数
     parser.add_argument("-v", "--version", action="version", version="%(prog)s 1.0")
     parser.add_argument("gff3", type=str, help="Normal filepath of GFF3")
-    parser.add_argument("-s", "--species", type=str, default='species', help="Optional Species abbreviation (default: order)")
+    parser.add_argument("-s", "--species", type=str, default='species', help="Optional Species abbreviation (default: species)")
 
     # 解析命令行参数
     args = parser.parse_args()
