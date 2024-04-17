@@ -19,11 +19,11 @@ def OldFa2NewFa(infa,ingff,ty='fasta'):
             Oid2Nid[a[6]] = a[1]
     SeqList = []
     for seq_record in SeqIO.parse(infa,ty):
-        print(seq_record.description)
-        b = re.split('[\t]|[\=]',seq_record.description) ## 每次均需要核对
-        selectId = b[1]  ## 每次均需要核对
+        # print(seq_record.description)
+        b = re.split('[\=\s+]',seq_record.description) ## 每次均需要核对
+        selectId = b[0]  ## 每次均需要核对
         if selectId not in Oid2Nid.keys(): 
-            print( "Wrong select !!!" )
+            print( "Wrong select : " + selectId )
             continue
         print (seq_record.id,Oid2Nid[selectId])
         seq_record.id = Oid2Nid[selectId]
