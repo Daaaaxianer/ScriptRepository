@@ -1,5 +1,5 @@
 # -*- coding:UTF-8 -*-
-# FileName  :GffFormatNew.py
+# FileName  :GffFormat.py
 # Time      :2023/9/5 
 # Author    :yuxian
 
