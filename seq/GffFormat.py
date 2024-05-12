@@ -138,7 +138,7 @@ if __name__ == '__main__':
 
     # 功能2: Read id file and extract bed for MG2C from custom gff
     parser.add_argument("--id2bed", action="store_true",
-                        help="extract bed for MG2C from custom gff(need -i -b)")
+                        help="extract bed for MG2C from custom gff(need -i -f -b)")
     parser.add_argument("-i", "--id", type=str,help="Id file to be extracted")
     parser.add_argument("-f", "--gff", type=str, help="custom gff file")
     parser.add_argument("-b", "--bed", type=str, default='out.bed', help="Extracted bed file")
