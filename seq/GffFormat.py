@@ -7,6 +7,7 @@ import pandas as pd
 import argparse
 import numpy as np
 import re
+from SeqFormat import readId
 
 ## 设置pandas显示宽度，不省略中间的列
 # pd.set_option("display.max_columns", None)
@@ -97,23 +98,61 @@ def process_dataframe(df, letters):
 
     return df
 
+def id2bed(idfile, gff_file, bed_file):
+    '''
+    :param idfile: 待提取id文件，单列
+    :param gff_file: 经 GffFormat.py gff3 处理后的 自定义Gff文件。
+    :return: bed file for MG2C (http://mg2c.iask.in/mg2c_v2.1/)
+    '''
+    idList = readId(idfile)
+    gffDf = readGff(gff_file)
+    bed_df = gffDf.loc[gffDf["Id"].isin(idList), ["Oid","start","end","chrId"]]
+    # 输出数据框到文件
+    bed_df.to_csv(f"{bed_file}", header=False, sep='\t', index=False)
+
+def readGff(gff_file):
+    '''
+    :param gff_file: custom gff file from gff3
+    :return: gff_df
+    '''
+    # 读取cunstom gff文件并存储为DataFrame
+    gff_df = pd.read_csv(gff_file, sep="\t", header=None,
+                          names=["chrId", "Id", "start", "end", "strand", "order", "Oid"])
+    return gff_df
+
+
 
 if __name__ == '__main__':
     # 定义命令行解析器对象
-    parser = argparse.ArgumentParser(description='Flexible conversion from gff3 to gff')
+    parser = argparse.ArgumentParser(description='Flexible conversion involving gff3, gff, bed')
 
     # 添加命令行参数
     parser.add_argument("-v", "--version", action="version", version="%(prog)s 1.0")
-    parser.add_argument("gff3", type=str, help="Normal filepath of GFF3")
-    parser.add_argument("-s", "--species", type=str, default='species', help="Optional Species abbreviation (default: species)")
+
+    # 功能1: Convert standard gff3 to custom gff
+    parser.add_argument("--gff3gff", action="store_true",
+                        help="Convert standard gff3 to custom gff format(need -g -s)")
+    parser.add_argument("-g", "--gff3", type=str, help="Normal filepath of GFF3")
+    parser.add_argument("-s", "--species", type=str, default='species',
+                        help="Optional Species abbreviation (default: species)")
+
+    # 功能2: Read id file and extract bed for MG2C from custom gff
+    parser.add_argument("--id2bed", action="store_true",
+                        help="extract bed for MG2C from custom gff(need -i -b)")
+    parser.add_argument("-i", "--id", type=str,help="Id file to be extracted")
+    parser.add_argument("-f", "--gff", type=str, help="custom gff file")
+    parser.add_argument("-b", "--bed", type=str, default='out.bed', help="Extracted bed file")
+
 
     # 解析命令行参数
     args = parser.parse_args()
 
     # 执行操作
-    # gff3_pd = process_gff3("Osativa_204_v7.0.gene.gff3")
-    gff3_pd = process_gff3(args.gff3)
+    if args.gff3gff:
+        gff3_pd = process_gff3(args.gff3)
+        gff_df = process_dataframe(gff3_pd, args.species)
+        # print(gff_df)
 
-    gff_df = process_dataframe(gff3_pd, args.species)
-    print(gff_df)
+    if args.id2bed:
+        id2bed(args.id, args.gff, args.bed)
 
