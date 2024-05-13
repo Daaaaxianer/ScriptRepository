@@ -10,6 +10,8 @@ All scripts support the `-h` parameter to view help.
 python GffFormat.py --gff3gff -g Vvinifera_145_Genoscope.12X.gene.gff3 -s vvi
 ```
 * Function 2: read id file and extract bed for MG2C from custom gff (--id2bed)
+
+The id file should have the same format as id.example.txt, with only one column: gene name
 ```
 # -b is an optional parameter (default: out.bed)
 python GffFormat.py --id2bed -i id.example.txt -f sl.4.0.all.gff -b sl.mg2c.bed
