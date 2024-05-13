@@ -4,7 +4,7 @@ Sequence-related scripts are stored here.
 All scripts support the `-h` parameter to view help.
 
 ## GffFormat.py
-* Function 1: convert standard gff3 to custom gff (--gff3gf)
+* Function 1: convert standard gff3 to custom gff (--gff3gff)
 ```
 # -s is an optional parameter (default：species)
 python GffFormat.py --gff3gff -g Vvinifera_145_Genoscope.12X.gene.gff3 -s vvi
