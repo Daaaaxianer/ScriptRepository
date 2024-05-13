@@ -31,6 +31,11 @@ python SeqFormat.py --gc -n sl.4.0.cds.fa -g out.gctable.txt
 # -e is an optional parameter (default: out.extractedSeq.fasta)
 python SeqFormat.py --extract -s sl.4.0.cds.fa -i id.example.txt -e out.extractedSeq.fasta
 ```
+* Function 4: Cut the sequence according to the given location information (--cut)
+```
+# -m is an optional parameter (default: out.cutSeq.fasta)
+python SeqFormat.py --extract -s sl.4.0.cds.fa -l id.example.txt -m out.cutSeq.fasta
+```
 
 
 
