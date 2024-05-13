@@ -1,6 +1,6 @@
 # -*- coding:UTF-8 -*-
 # FileName  :seqFormat.py
-# Time      :2023/3/30
+# Time      :2021/3/30
 # Author    :xian
 
 import re
