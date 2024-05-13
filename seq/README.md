@@ -27,14 +27,16 @@ python SeqFormat.py --cdstrans -c sl.4.0.cds.fa -p out.pep.fasta
 python SeqFormat.py --gc -n sl.4.0.cds.fa -g out.gctable.txt
 ```
 * Function 3: Extract the sequence of a given id (--extract)
+`id.example.txt` has only one column: gene name
 ```
 # -e is an optional parameter (default: out.extractedSeq.fasta)
 python SeqFormat.py --extract -s sl.4.0.cds.fa -i id.example.txt -e out.extractedSeq.fasta
 ```
 * Function 4: Cut the sequence according to the given location information (--cut)
+`cut.example.txt` contains four columns: original id, start site, end site, new id.
 ```
 # -m is an optional parameter (default: out.cutSeq.fasta)
-python SeqFormat.py --extract -s sl.4.0.cds.fa -l id.example.txt -m out.cutSeq.fasta
+python SeqFormat.py --extract -s sl.4.0.cds.fa -l cut.example.txt -m out.cutSeq.fasta
 ```
 
 
