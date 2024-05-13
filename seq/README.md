@@ -1,5 +1,6 @@
 # Seq Work Script
 Sequence-related scripts are stored here.
+
 All scripts support the `-h` parameter to view help.
 
 ## GffFormat.py
