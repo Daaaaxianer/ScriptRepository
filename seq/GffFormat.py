@@ -7,7 +7,7 @@ import pandas as pd
 import argparse
 import numpy as np
 import re
-from SeqFormat import readId
+# from SeqFormat import readId
 
 ## 设置pandas显示宽度，不省略中间的列
 # pd.set_option("display.max_columns", None)
@@ -120,6 +120,12 @@ def readGff(gff_file):
                           names=["chrId", "Id", "start", "end", "strand", "order", "Oid"])
     return gff_df
 
+def readId(idfile):
+    with open(idfile, 'r') as ids:
+        content = ids.read()
+        linelist = content.splitlines()
+    print("\nThe id file has been read!\n")
+    return linelist
 
 
 if __name__ == '__main__':
@@ -138,7 +144,7 @@ if __name__ == '__main__':
 
     # 功能2: Read id file and extract bed for MG2C from custom gff
     parser.add_argument("--id2bed", action="store_true",
-                        help="extract bed for MG2C from custom gff(need -i -f -b)")
+                        help="extract bed for MG2C from custom gff(need -i -b)")
     parser.add_argument("-i", "--id", type=str,help="Id file to be extracted")
     parser.add_argument("-f", "--gff", type=str, help="custom gff file")
     parser.add_argument("-b", "--bed", type=str, default='out.bed', help="Extracted bed file")
