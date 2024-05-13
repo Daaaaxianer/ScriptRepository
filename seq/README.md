@@ -38,7 +38,7 @@ python SeqFormat.py --extract -s sl.4.0.cds.fa -i id.example.txt -e out.extracte
 The cut file should have the same format as `cut.example.txt`, which contains four columns: original id, start site, end site, new id.
 ```
 # -m is an optional parameter (default: out.cutSeq.fasta)
-python SeqFormat.py --extract -s sl.4.0.cds.fa -l cut.example.txt -m out.cutSeq.fasta
+python SeqFormat.py --cut -s sl.4.0.cds.fa -l cut.example.txt -m out.cutSeq.fasta
 ```
 
 
