@@ -1,7 +1,7 @@
 # Mutiple alignment and Evolution tree
-# [muscle5](https://www.drive5.com/muscle5/)
-# [trimal](http://trimal.cgenomics.org/)
-# [iqtree2](https://github.com/iqtree/iqtree2)
+* [muscle5](https://www.drive5.com/muscle5/)
+* [trimal](http://trimal.cgenomics.org/)
+* [iqtree2](https://github.com/iqtree/iqtree2)
 ## muscle2iqtree.py
 ```
 # muscle5+iqtree2 (linux and windows)
