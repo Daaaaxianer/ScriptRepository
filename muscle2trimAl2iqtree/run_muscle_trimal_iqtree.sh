@@ -1,6 +1,6 @@
 #! /bin/bash
 
-### use Muscle Multiple Sequences Alignment、trimAL to Trimming and Iqtree make gene tree
+### use Muscle3 Multiple Sequences Alignment、trimAL1.4 to Trimming and Iqtree make gene tree
 ### input_fasta : fasta in protein or nucleic acid
 ### output_tree_name : output tree file name in xxx.tree or xxx.nwk
 ### xian 2021-10-09 ###
