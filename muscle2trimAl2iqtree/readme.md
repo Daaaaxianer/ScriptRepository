@@ -1,6 +1,6 @@
 # Mutiple alignment and Evolution tree
-* [muscle5](https://www.drive5.com/muscle5/)
-* [trimal](http://trimal.cgenomics.org/)
+* [Muscle5](https://www.drive5.com/muscle5/)
+* [trimAl](http://trimal.cgenomics.org/)
 * [iqtree2](https://github.com/iqtree/iqtree2)
 ## muscle2iqtree.py
 ```
