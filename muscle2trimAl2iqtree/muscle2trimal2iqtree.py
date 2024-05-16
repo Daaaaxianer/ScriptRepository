@@ -10,7 +10,7 @@ def main(infile):
     subprocess.run(["trimal", "-in", infile, "-out", infile + ".align.trimal.fasta", "-automated1"])
     print("trimal work completed!\n")
 
-    subprocess.run(["iqtree2", "-s", infile + ".align.trimal.fasta", "-B", "1000", "-bnni", "-redo", "-T", "AUTO"])
+    subprocess.run(["iqtree2", "-s", infile + ".align.trimal.fasta", "-B", "1000", "-bnni", "-redo", "-T", "AUTO", "-gt", "0.9", "-cons", "60"])
     print("iqtree work completed!\n")
 
     treefile = infile + ".align.trimal.fasta.treefile"
@@ -41,3 +41,5 @@ if __name__ == "__main__":
 #### -m MFP 模型选择参数可不加，默认使用-m MFP选模型，也可使用-m 指定模型
 #### -T (v1.x版的等价参数为-nt)对应的是CPU线程数，AUTO时软件自选，将AUTO改为4即设置4线程
 #### -ntmax 设置最大调用内核数
+#### 移除列中间隙占比90%以上的列(-gt), 除非移除后剩余序列的长度小于60%(-cons)
+#### trimal -in <inputfile> -out <outputfile> -gt 0.9 -cons 60
