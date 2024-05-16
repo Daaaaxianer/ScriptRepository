@@ -10,5 +10,5 @@ python muscle2iqtree.py xxx.protein.fasta
 ## muscle2trimal2iqtree.py
 ```
 # muscle5+trimal1.4+iqtree2 (linux)
-python muscle2trimal2iqtree.py xxx.protein.fasta
+python muscle2trimal2iqtree.py xxx.cds.fasta
 ```
