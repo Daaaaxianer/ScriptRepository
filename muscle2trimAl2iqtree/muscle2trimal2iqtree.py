@@ -10,7 +10,7 @@ def main(infile):
     subprocess.run(["trimal", "-in", infile, "-out", infile + ".align.trimal.fasta", "-automated1"])
     print("trimal work completed!\n")
 
-    subprocess.run(["iqtree2", "-s", infile + ".align.trimal.fasta", "-B", "1000", "-bnni", "-redo", "-T", "AUTO", "-gt", "0.9", "-cons", "60"])
+    subprocess.run(["iqtree2", "-s", infile + ".align.trimal.fasta", "-B", "1000", "-bnni", "-redo", "-T", "AUTO"])
     print("iqtree work completed!\n")
 
     treefile = infile + ".align.trimal.fasta.treefile"
