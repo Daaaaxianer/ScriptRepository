@@ -7,7 +7,7 @@ def main(infile):
     subprocess.run(["muscle", "-align", infile, "-output", infile + ".align.fasta"])
     print("muscle work completed!\n")
 
-    subprocess.run(["iqtree2", "-s", infile + ".align.fasta", "-B", "1000", "-bnni", "-redo", "-T", "AUTO", "-gt", "0.9", "-cons", "60"])
+    subprocess.run(["iqtree2", "-s", infile + ".align.fasta", "-B", "1000", "-bnni", "-redo", "-T", "AUTO"])
     print("iqtree work completed!\n")
 
     shutil.copy(infile + ".align.fasta.treefile", infile + ".align.fasta.treefile.nwk")
