@@ -25,6 +25,9 @@ This function is the same as running `gff_filter.py` alone.
 ```
 # -f is a reused parameter
 python GffFormat.py --filtergff -f T2T.gff -ff T2Tcytobands.txt
+
+# Equivalent to running gff_filter.py
+python gff_filter.py -gff T2T.gff -fgff T2Tcytobands.txt
 ```
 
 ## SeqFormat.py
