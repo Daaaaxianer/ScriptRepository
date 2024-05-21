@@ -17,9 +17,11 @@ The id file should have the same format as `id.example.txt`, with only one colum
 python GffFormat.py --id2bed -i id.example.txt -f sl.4.0.all.gff -b sl.mg2c.bed
 ```
 
-* Function 3: Read gff filter file and extract id from custom gff (--filtergff)
+* Function 3: Read gff filter file and extract id from custom gff (--filtergff) 
 
 The gff filter file should be in the same format as `the T2Tcytobands.txt`, and the first column should be the same as the first column of the custom gff.
+
+This function is the same as running `gff_filter.py` alone.
 ```
 # -f is a reused parameter
 python GffFormat.py --filtergff -f T2T.gff -ff T2Tcytobands.txt
