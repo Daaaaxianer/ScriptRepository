@@ -17,6 +17,14 @@ The id file should have the same format as id.example.txt, with only one column:
 python GffFormat.py --id2bed -i id.example.txt -f sl.4.0.all.gff -b sl.mg2c.bed
 ```
 
+* Function 3: Read gff filter file and extract id from custom gff (--filtergff)
+
+The gff filter file should be in the same format as "the T2Tcytobands.txt", and the first column should be the same as the first column of the `custom gff`.
+```
+# -f is a reused parameter
+python GffFormat.py --filtergff -f T2T.gff -ff T2Tcytobands.txt
+```
+
 ## SeqFormat.py
 * Function 1: Translate nucleic acid coding sequence into amino acid sequence (--cdstrans)
 ```
