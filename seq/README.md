@@ -56,5 +56,20 @@ The cut file should have the same format as `cut.example.txt`, which contains fo
 python SeqFormat.py --cut -s sl.4.0.cds.fa -l cut.example.txt -m out.cutSeq.fasta
 ```
 
+* Function 5: Split fatsa sequences by id (--splitfa)
+
+This method can split the fasta sequence into strips of sequences according to the id name of the sequence.
+
+```
+# -odir is an optional parameter (default: split_out)
+python SeqFormat.py --splitfa -fa sl.4.0.cds.fa
+# Use-odir custom output directory
+python SeqFormat.py --splitfa -fa sl.4.0.cds.fa -odir out
+
+# Equivalent to running split_fasta.py
+python split_fasta.py -fa sl.4.0.cds.fa -odir iout
+
+```
+
 
 

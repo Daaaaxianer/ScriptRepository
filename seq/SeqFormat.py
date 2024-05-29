@@ -11,6 +11,7 @@ from Bio.SeqUtils import GC
 from Bio.SeqUtils import GC123
 import sys
 import argparse
+import os
 
 def cdsTrans(cdsSeq, pepSeq):
     '''
@@ -138,6 +139,18 @@ def cutSeq(allSeq, cutfile, cutSeq):
         seq_records.append(my_record)
     SeqIO.write(seq_records, cutSeq, "fasta")
 
+def split_sequences(input_file, output_dir):
+    '''
+    :param input_file: 待分割的所有序列文件，默认fasta格式
+    :param output_dir: 输出目录，默认为split_out
+    '''
+    for record in SeqIO.parse(input_file, "fasta"):
+        sequence_id = record.id
+        output_filename = os.path.join(output_dir, f"{sequence_id}.fasta")
+        
+        with open(output_filename, "w") as out_handle:
+            SeqIO.write(record, out_handle, "fasta")
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description = "用途：操作核苷酸和氨基酸序列")
     parser.add_argument("--cdstrans", action = "store_true",
@@ -162,6 +175,11 @@ if __name__ == '__main__':
     parser.add_argument("-m", "--miniSeq", type=str, default="out.cutSeq.fasta",
                         help="Cutted sequence file (default: out.cutSeq.fasta).")
 
+    parser.add_argument("--splitfa", action = "store_true", help = "Split fatsa sequences by id(need -s -fa -odir)")
+    parser.add_argument("-fa", "--fastaSeq", type = str, help = "Input FASTA file")
+    parser.add_argument("-odir","--output_dir", default="split_out", help="Output directory (default: split_out)")
+
+
     args = parser.parse_args()
     if args.cdstrans:
         cdsTrans(args.cdsSeq, args.pepSeq)
@@ -171,5 +189,9 @@ if __name__ == '__main__':
         seqExtract(args.Seq, args.Id, args.extractedSeq)
     if args.cut:
         cutSeq(args.Seq, args.Loc, args.miniSeq)
+    if args.splitfa:
+        if not os.path.exists(args.output_dir):
+            os.makedirs(args.output_dir)
+        split_sequences(args.fastaSeq, args.output_dir)
 
 
