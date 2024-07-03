@@ -30,6 +30,7 @@ option arguments:
 -c COUNT, --count COUNT       Minimum count for row comparison (default: 5)
 
 ```
+
 **example**
 ```
 python orthogroup2tree.py orthogroups.test.txt
