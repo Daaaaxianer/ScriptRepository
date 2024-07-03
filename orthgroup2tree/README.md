@@ -15,16 +15,22 @@ All scripts support the `-h` parameter to view help.
 
 `orthogroup2tree.py [-h] [-i INDIR] [-o OUTDIR] [-p PROCESSES] [-e END] [-c COUNT] orthogroups_file`
 
-positional arguments:
+```
+**positional arguments**:
 
 orthogroups_file      Path to the Orthogroups file
 
-```
-# -i Directory containing genome files (default: genome)
-# -o Output directory name (default: out)
-# -p Number of processes to use (default: 5)
-# -e Suffix for FASTA files (default: .pep)
-# -c Minimum count for row comparison (default: 5)
+**option arguments**:
 
-python GffFormat.py --gff3gff -g Vvinifera_145_Genoscope.12X.gene.gff3 -s vvi
+-h, --help            show this help message and exit
+-i INDIR, --indir INDIR     Directory containing genome files (default: genome)
+-o OUTDIR, --outdir OUTDIR  Output directory name (default: out)
+-p PROCESSES, --processes PROCESSES   Number of processes to use (default: 5)
+-e END, --end END   Suffix for FASTA files (default: .pep)
+-c COUNT, --count COUNT   Minimum count for row comparison (default: 5)
+
+```
+**example**
+```
+python orthogroup2tree.py orthogroups.test.txt
 ```
