@@ -35,5 +35,16 @@ option arguments:
 
 **example**
 ```
+# defaut 
 python orthogroup2tree.py orthogroups.test.txt
+
+# Define input file suffix
+python orthogroup2tree.py orthogroups.test.txt -e .pep.fa
+
+# Define sequence input directory(infasta) and output directory(outdir)
+python orthogroup2tree.py orthogroups.test.txt -i infasta -o outdir
+
+# Define the number of parallel processes(3)
+python orthogroup2tree.py orthogroups.test.txt -p 3
+
 ```
