@@ -33,7 +33,7 @@ option arguments:
 
 ```
 
-**example**
+**Example**
 ```
 # defaut 
 python orthogroup2tree.py orthogroups.test.txt
