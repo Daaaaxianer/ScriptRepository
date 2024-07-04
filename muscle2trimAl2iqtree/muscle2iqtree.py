@@ -1,19 +1,34 @@
+# -*- coding: UTF-8 -*-
+# FileName  : muscle2iqtree.py
+# Time      : 2022/3/24
+# Author    : xian
+
 import argparse
 import subprocess
 import shutil
-import sys
+
+def run_muscle(infile):
+    subprocess.run(["muscle", "-align", infile, "-output", infile + ".align.fasta"])
+    print("\nmuscle work completed!\n")
+
+def run_iqtree(infile):
+    subprocess.run(["iqtree2", "-s", infile + ".align.fasta", "-B", "1000", "-bnni", "-redo", "-T", "AUTO"])
+    print("\niqtree work completed!\n")
+
+def copy_treefile(infile):
+    shutil.copy(infile + ".align.fasta.treefile", infile + ".align.fasta.treefile.nwk")
+    print("\nFinal file: " + infile + ".align.fasta.treefile.nwk")
 
 def main(infile):
-    subprocess.run(["muscle", "-align", infile, "-output", infile + ".align.fasta"])
-    print("muscle work completed!\n")
+    # Run muscle
+    run_muscle(infile)
+    
+    # Run iqtree2
+    run_iqtree(infile)
 
-    subprocess.run(["iqtree2", "-s", infile + ".align.fasta", "-B", "1000", "-bnni", "-redo", "-T", "AUTO"])
-    print("iqtree work completed!\n")
-
-    shutil.copy(infile + ".align.fasta.treefile", infile + ".align.fasta.treefile.nwk")
-
-    print("Final file:" + infile + ".align.fasta.treefile.nwk")
-    print("Done!")
+    # Copy treefile
+    copy_treefile(infile)
+    print("\nDone!")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Run muscle and iqtree2 on a fasta file.")

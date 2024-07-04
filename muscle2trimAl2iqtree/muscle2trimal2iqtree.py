@@ -1,18 +1,26 @@
+# -*- coding: UTF-8 -*-
+# FileName  : muscle2trimal2iqtree.py
+# Time      : 2022/3/24
+# Author    : xian
+
 import argparse
 import subprocess
 import shutil
 import os
 
-def main(infile):
+def run_muscle(infile):
     subprocess.run(["muscle", "-align", infile, "-output", infile + ".align.fasta"])
     print("muscle work completed!\n")
 
-    subprocess.run(["trimal", "-in", infile, "-out", infile + ".align.trimal.fasta", "-automated1"])
+def run_trimal(infile):
+    subprocess.run(["trimal", "-in", infile + ".align.fasta", "-out", infile + ".align.trimal.fasta", "-automated1"])
     print("trimal work completed!\n")
 
+def run_iqtree(infile):
     subprocess.run(["iqtree2", "-s", infile + ".align.trimal.fasta", "-B", "1000", "-bnni", "-redo", "-T", "AUTO"])
     print("iqtree work completed!\n")
 
+def copy_treefile(infile):
     treefile = infile + ".align.trimal.fasta.treefile"
     if os.path.exists(treefile):
         shutil.copy(treefile, infile + ".align.trimal.fasta.treefile.nwk")
@@ -21,6 +29,11 @@ def main(infile):
     else:
         print("Error: Tree file does not exist!\n")
 
+def main(infile):
+    run_muscle(infile)
+    run_trimal(infile)
+    run_iqtree(infile)
+    copy_treefile(infile)
     print("Done!!!")
 
 if __name__ == "__main__":
