@@ -35,7 +35,7 @@ option arguments:
 
 **Example**
 ```
-# defaut 
+# default 
 python orthogroup2tree.py orthogroups.test.txt
 
 # Define input file suffix
