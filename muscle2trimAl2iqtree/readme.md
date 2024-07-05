@@ -1,7 +1,7 @@
 # Mutiple alignment and Evolution tree
 ## Dependency package
 * [Muscle 5](https://www.drive5.com/muscle5/)
-* [trimAl V1.4](http://trimal.cgenomics.org/)
+* [trimAl V1.4]((https://github.com/inab/trimal)/
 
   It is recommended to compile with the latest version of the code on github
 * [iqtree2](https://github.com/iqtree/iqtree2)
