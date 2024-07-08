@@ -24,8 +24,10 @@ parser.add_argument('-p', '--processes', type=int, default=5,
                     help='Number of processes to use (default: 5)')
 parser.add_argument('-e', '--end', type=str, default='.pep',
                     help='Suffix for FASTA files (default: .pep)')
-parser.add_argument('-c', '--count', type=int, default=5,
+parser.add_argument('-n', '--min_count', type=int, default=5,
                     help='Minimum count for row comparison (default: 5)')
+parser.add_argument('-x', '--max_count', type=int, default=20,
+                    help='Maximum count for row comparison (default: 20)')
 args = parser.parse_args()
 
 # 解析命令行参数
@@ -34,7 +36,8 @@ orthogroups_file = args.orthogroups_file
 output_dir = args.outdir
 num_processes = args.processes
 file_suffix = args.end
-min_count = args.count
+min_count = args.min_count
+max_count = args.max_count
 
 # 如果输出目录存在，则删除其中所有内容
 if os.path.exists(output_dir):
@@ -59,7 +62,7 @@ orth.index = orth.index.str.rstrip(':')
 
 # 步骤3：提取序列并保存为 .fasta 文件到 out 目录
 for index, row in orth.iterrows():
-    if row.count() > min_count:
+    if row.count() > min_count and row.count() < max_count:
         outfile = os.path.join(output_dir, f"{index}.fasta")
         with open(outfile, 'w') as f:
             for ortholog_id in row.dropna():
