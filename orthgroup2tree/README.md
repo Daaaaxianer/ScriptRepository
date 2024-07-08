@@ -15,7 +15,7 @@ All scripts support the `-h` parameter to view help.
 
 **Function**: Process orthogroups and generate phylogenetic trees 
 
-`orthogroup2tree.py [-h] [-i INDIR] [-o OUTDIR] [-p PROCESSES] [-e END] [-c COUNT] orthogroups_file`
+`orthogroup2tree.py [-h] [-i INDIR] [-o OUTDIR] [-p PROCESSES] [-e END] [-n MIN_COUNT] [-x MAX_COUNT] orthogroups_file`
 
 ```
 positional arguments:
