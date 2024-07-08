@@ -45,7 +45,7 @@ python orthogroup2tree.py orthogroups.test.txt -e .pep.fa
 # Define sequence input directory(infasta) and output directory(outdir)
 python orthogroup2tree.py orthogroups.test.txt -i infasta -o outdir
 
-# Define the number of parallel processes(3)
+# Define the number of parallel processes(default 5 , set 3)
 python orthogroup2tree.py orthogroups.test.txt -p 3
 
 # Define Minimum count for row comparison (default 5 , set 10)
