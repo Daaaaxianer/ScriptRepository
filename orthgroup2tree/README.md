@@ -29,7 +29,8 @@ option arguments:
 -o OUTDIR, --outdir OUTDIR    Output directory name (default: out)
 -p PROCESSES, --processes PROCESSES   Number of processes to use (default: 5)
 -e END, --end END             Suffix for FASTA files (default: .pep)
--c COUNT, --count COUNT       Minimum count for row comparison (default: 5)
+-n MIN_COUNT, --min_count MIN_COUNT       Minimum count for row comparison (default: 5)
+-x MAX_COUNT, --max_count MAX_COUNT       Maximum count for row comparison (default: 20)
 
 ```
 
@@ -46,6 +47,9 @@ python orthogroup2tree.py orthogroups.test.txt -i infasta -o outdir
 
 # Define the number of parallel processes(3)
 python orthogroup2tree.py orthogroups.test.txt -p 3
+
+# Define Minimum count for row comparison (default 5 , set 10)
+python orthogroup2tree.py orthogroups.test.txt -n 10
 
 ```
 
