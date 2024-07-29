@@ -55,4 +55,4 @@ python orthogroup2tree.py orthogroups.test.txt -n 10
 
 Example in terminal:
 
-![code_example.gif](https://github.com/Daaaaxianer/ScriptRepository/blob/main/orthgroup2tree/code_example.gif)
+![code_example](https://github.com/Daaaaxianer/ScriptRepository/blob/main/orthgroup2tree/code_example.gif)
