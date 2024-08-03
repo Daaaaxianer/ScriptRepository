@@ -33,7 +33,7 @@ def process_gff3(gff3_file):
     gff3_df = gff3_df[~gff3_df['seqname'].str.startswith("#")]
 
     # 3. 删除某些无效染色体seqname的行
-    values_to_remove = ['ChrSy', 'ChrUn', 'chrUn']
+    values_to_remove = ['ChrC', 'ChrM', 'chrUn']
 
     gff3_df = gff3_df[~gff3_df['seqname'].isin(values_to_remove)]
     gff3_df = gff3_df[~(gff3_df['seqname'].str.endswith(('_random',)))] # 可根据实际情况增减
@@ -45,8 +45,9 @@ def process_gff3(gff3_file):
 
     # 5. 从group列 name字段中 提取 gene loc 和转录本 name
     # gff3_df['name'] = gff3_df['group'].str.extract(r'([\w.]+)\.')
-    gff3_df['loc'] = gff3_df['group'].str.split("Parent=").str[1].str.split(".").str[0] ## 每次均需要核对
+    gff3_df['loc'] = gff3_df['group'].str.split("Parent=").str[1].str.split(";").str[0] ## 每次均需要核对
     gff3_df['name'] = gff3_df['group'].str.split("Name=").str[1].str.split(";").str[0] ## 每次均需要核对
+    # print(gff3_df['loc'])
 
     # 6. 比较每个gene的转录本的长度差异，仅保留长度差异最大的转录本
     gff3_df['length_diff'] = gff3_df['end'] - gff3_df['start']
@@ -57,7 +58,7 @@ def process_gff3(gff3_file):
     gff3_df['end'] = gff3_df['end'].astype(int)
     gff3_df['length_diff'] = gff3_df['length_diff'].astype(int)
 
-    print(gff3_df)
+    # print(gff3_df)
 
     return gff3_df
 
@@ -70,7 +71,13 @@ def process_dataframe(df, letters):
     '''
 
     # 提取seqname列末尾的数字并创建新列chr
-    df['chr'] = df['seqname'].str.extract(r'(\d+)$').astype(int)
+    df['chr'] = df['seqname'].str.extract(r'(\d+)$')
+    
+    # 将提取结果转换为数字，遇到错误转换为 NaN
+    df['chr'] = pd.to_numeric(df['chr'], errors='coerce')
+    
+    # 用0或其他适当的默认值替换NaN
+    df['chr'] = df['chr'].fillna(0).astype(int)
 
     # 按照chr和start列进行升序排序
     df = df.sort_values(by=['chr', 'start'], ascending=[True, True])
@@ -83,9 +90,6 @@ def process_dataframe(df, letters):
     df['lensorder'] = df.groupby('chr')['order'].transform('max')
 
     # 新增id列，自定义三个字母 + chr列的值 + g + order列的数值组成的字符串
-    # df['id'] = (df['order'].apply(lambda x: f"{x:05d}")
-    #             .apply(lambda x: f"{letters}{df['chr'].values[0]}g{x}"))
-
     df['id'] = (letters + df['chr'].astype(str) + 'g' + df['order'].astype(str).str.zfill(5))
 
     # 分组chr与其对应的lensbp和lensorder值输出到单独的文件
@@ -214,7 +218,7 @@ if __name__ == '__main__':
     if args.gff3gff:
         gff3_pd = process_gff3(args.gff3)
         gff_df = process_dataframe(gff3_pd, args.species)
-        # print(gff_df)
+        print(gff_df)
 
     if args.id2bed:
         id2bed(args.id, args.gff, args.bed)
