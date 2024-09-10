@@ -27,13 +27,15 @@ def process_gff3(gff3_file):
     '''
     # 1. 读取GFF3文件并存储为DataFrame
     gff3_df = pd.read_csv(gff3_file, sep="\t", header=None,
-                          names=["seqname", "source", "feature", "start", "end", "score", "strand", "frame", "group"])
+                          names=["seqname", "source", "feature", "start", "end", "score", "strand", "frame", "group"],
+                          dtype=str)
 
     # 2. 使用布尔索引筛选出不以"#"开头的行并删除
     gff3_df = gff3_df[~gff3_df['seqname'].str.startswith("#")]
+    gff3_df = gff3_df[~gff3_df['seqname'].str.startswith("B73V4")]
 
     # 3. 删除某些无效染色体seqname的行
-    values_to_remove = ['ChrC', 'ChrM', 'chrUn']
+    values_to_remove = ['ChrC', 'ChrM', 'chrUn','Pt','Mt']
 
     gff3_df = gff3_df[~gff3_df['seqname'].isin(values_to_remove)]
     gff3_df = gff3_df[~(gff3_df['seqname'].str.endswith(('_random',)))] # 可根据实际情况增减
@@ -47,16 +49,15 @@ def process_gff3(gff3_file):
     # gff3_df['name'] = gff3_df['group'].str.extract(r'([\w.]+)\.')
     gff3_df['loc'] = gff3_df['group'].str.split("Parent=").str[1].str.split(";").str[0] ## 每次均需要核对
     gff3_df['name'] = gff3_df['group'].str.split("Name=").str[1].str.split(";").str[0] ## 每次均需要核对
-    # print(gff3_df['loc'])
+    # print(gff3_df['loc'])    
 
     # 6. 比较每个gene的转录本的长度差异，仅保留长度差异最大的转录本
-    gff3_df['length_diff'] = gff3_df['end'] - gff3_df['start']
-    gff3_df = gff3_df.loc[gff3_df.groupby('loc')['length_diff'].idxmax()].reset_index(drop=True)
-
     # 将start和end列的类型设置为整数
     gff3_df['start'] = gff3_df['start'].astype(int)
     gff3_df['end'] = gff3_df['end'].astype(int)
-    gff3_df['length_diff'] = gff3_df['length_diff'].astype(int)
+    gff3_df['length_diff'] = gff3_df['end'] - gff3_df['start']
+    gff3_df['length_diff'] = gff3_df['length_diff'].astype(int)    
+    gff3_df = gff3_df.loc[gff3_df.groupby('loc')['length_diff'].idxmax()].reset_index(drop=True)
 
     # print(gff3_df)
 
