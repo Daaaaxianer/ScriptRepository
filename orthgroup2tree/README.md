@@ -9,7 +9,8 @@ All scripts support the `-h` parameter to view help.
 1. [Muscle 5](http://drive5.com/muscle/) not Muscle 3
 2. [trimal V1.4](https://github.com/inab/trimal)
 3. [iqtree2](https://github.com/iqtree/iqtree2)
-4. Third-party python package:[Biopython](https://biopython.org/), pandas, numpy, subprocess, multiprocessing, argparse 
+4. Third-party python package:[Biopython](https://biopython.org/), pandas, numpy, subprocess, multiprocessing, argparse
+5. [ete4](https://github.com/etetoolkit/ete)
 
 ## Simple usage
 
