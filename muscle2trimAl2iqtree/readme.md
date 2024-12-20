@@ -12,6 +12,6 @@ python muscle2iqtree.py xxx.protein.fasta
 ```
 ## muscle2trimal2iqtree.py (faster and recommended)
 ```
-# muscle5+trimal1.4+iqtree2 (linux)
+# muscle5+trimal1.4+iqtree2 (linux and windows)
 python muscle2trimal2iqtree.py xxx.cds.fasta
 ```
