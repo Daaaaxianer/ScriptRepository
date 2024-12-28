@@ -1,0 +1,16 @@
+Pfam	267
+MobiDBLite	140
+PANTHER	302
+Gene3D	224
+CDD	117
+ProSiteProfiles	116
+FunFam	120
+SUPERFAMILY	212
+SMART	101
+NCBIfam	22
+Hamap	6
+Coils	47
+ProSitePatterns	68
+PRINTS	35
+PIRSF	16
+SFLD	1
