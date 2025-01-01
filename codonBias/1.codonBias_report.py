@@ -160,11 +160,11 @@ def calculate_protein_metrics(in_file, file_prefix, genetic_code_num, output_dir
         logging.error(f"Error processing protein sequences: {e}")
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Analyze nucleotide and protein sequences.")
+    parser = argparse.ArgumentParser(description="Codon usage analysis.")
     parser.add_argument("nucleotide_file", help="Path to the nucleotide FASTA file (can be 'None' if not provided)")
     parser.add_argument("protein_file", help="Path to the protein FASTA file (can be 'None' if not provided)")
     parser.add_argument("output_directory", help="Path to the output directory")
-    parser.add_argument("--genetic_code_num", type=int, default=1, help="Genetic code number (default: 1)")
+    parser.add_argument("-g","--genetic_table_num", type=int, default=1, help="Genetic code number (default: 1)")
 
     args = parser.parse_args()
 
