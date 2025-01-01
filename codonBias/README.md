@@ -18,6 +18,10 @@ All scripts support the `-h` parameter to view help.
 ```
 python 1.codonBias_report.py <nucleotide_file> <protein_file> <output_directory>
 ```
+`-g` Optional parameters:Genetic code number (default:1). 
+
+About all genetic table number, click https://www.ncbi.nlm.nih.gov/Taxonomy/Utils/wprintgc.cgi
+
 **Example**
 ```
 python 1.codonBias_report.py 2OGD.in.cc.cds.fasta 2OGD.in.cc.protein.fasta 2OGD.in.cc
@@ -26,5 +30,14 @@ python 1.codonBias_report.py 2OGD.in.cc.cds.fasta 2OGD.in.cc.protein.fasta 2OGD.
 
 **Usage**
 ```
-python 2.codonBias_report.py <nucleotide_file> <protein_file> <output_directory>
+python 2.codonBias_plot.py <nucleotide_file> <protein_file> <organism_name> <output_directory>
 ```
+`-g` Optional parameters:Genetic code number (default:1). 
+
+About all genetic table number, click https://www.ncbi.nlm.nih.gov/Taxonomy/Utils/wprintgc.cgi
+
+**Example**
+```
+python 2.codonBias_plot.py 2OGD.in.cc.cds.fasta 2OGD.in.cc.protein.fasta coffee2OGD 2OGD.in.cc
+```
+
