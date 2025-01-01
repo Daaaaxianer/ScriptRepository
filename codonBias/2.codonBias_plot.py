@@ -137,27 +137,27 @@ def main(nuc_file, prot_file, organism_name, output_dir, genetic_table_num=1):
             # )
             # logging.info(f"AA Count analysis for each gene using 'Aromaticity' saved to: {output_dir}")
 
-        print("所有图表已成功生成并保存到指定目录。")
+        print("All images have been successfully saved to the specified directory。")
 
     except Exception as e:
         logging.error(f"Error during analysis: {e}")
-        print(f"发生错误: {e}")
+        print(f"An error occurred: {e}")
 
 
 if __name__ == "__main__":
     # 设置日志记录
     logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-    parser = argparse.ArgumentParser(description="绘制多个生物信息学分析图")
+    parser = argparse.ArgumentParser(description="Draw graphs related to codon codonBias")
 
     # 添加位置参数
-    parser.add_argument("nuc_file", help="核酸序列文件路径")
-    parser.add_argument("prot_file", help="蛋白质序列文件路径")
-    parser.add_argument("organism_name", help="物种名称")
-    parser.add_argument("output_dir", help="输出图像保存的文件夹路径")
+    parser.add_argument("nuc_file", help="Path to the nucleotide FASTA file")
+    parser.add_argument("prot_file", help="Path to the protein FASTA file")
+    parser.add_argument("organism_name", help="The description of the title in the picture is often the name of the species")
+    parser.add_argument("output_dir", help="Path to the output folder for saving images")
 
     # 添加可选参数
-    parser.add_argument("-g", "--genetic_table_num", type=int, default=1, help="遗传密码表编号，默认为1")
+    parser.add_argument("-g", "--genetic_table_num", type=int, default=1, help="Genetic code number (default: 1)")
 
     args = parser.parse_args()
 
