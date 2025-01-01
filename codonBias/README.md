@@ -4,7 +4,7 @@ Using [CodonU](https://github.com/SouradiptoC/CodonU) to Analyze the Preference 
 
 # Dependency
 
-We need a lot of Python packages to perform the following operations to ensure the script runs smoothly
+We need a lot of Python packages to perform the following operations
 
 ```
 pip install -r codon_requirements.txt
