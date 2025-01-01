@@ -32,7 +32,9 @@ python 1.codonBias_report.py 2OGD.in.cc.cds.fasta 2OGD.in.cc.protein.fasta 2OGD.
 ```
 python 2.codonBias_plot.py <nucleotide_file> <protein_file> <organism_name> <output_directory>
 ```
-`-g` Optional parameters:Genetic code number (default:1). 
+`organism_name`: The description of the title in the picture is often the name of the species
+
+`-g`: Optional parameters:Genetic code number (default:1). 
 
 About all genetic table number, click https://www.ncbi.nlm.nih.gov/Taxonomy/Utils/wprintgc.cgi
 
