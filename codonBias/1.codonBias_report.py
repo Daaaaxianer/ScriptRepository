@@ -13,7 +13,7 @@ from Bio.Seq import Seq
 import os
 import logging
 import glob
-import shutil  # 如果需要使用 shutil.rmtree() 删除目录，建议导入此模块
+import shutil  
 
 # 设置日志配置
 logging.basicConfig(
