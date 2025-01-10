@@ -19,3 +19,10 @@ Categorize and count the results of interproscan.
 ```
 python interproscan_classification_and_counting.py interproscan.result.tsv interproscan.result.count.txt
 ```
+
+## WGDI file to JCVI file
+
+Generate input files for JCVI using the input or output results of WGDI
+
+
+
