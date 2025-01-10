@@ -49,7 +49,7 @@ options:
 ```
 ```
 # example
-python wgdi2jcvi.py gff2bed -gff coca_gff -bed coca.bed
+python wgdi2jcvi.py gff2bed -gff coca.new.gff -bed coca.bed
 ```
 
 ### Usage 2 : Blast to jcvi anchor
