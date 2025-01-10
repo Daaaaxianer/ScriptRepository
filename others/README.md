@@ -24,9 +24,9 @@ python interproscan_classification_and_counting.py interproscan.result.tsv inter
 
 Generate input files for JCVI using the input or output results of WGDI
 
-```
-python wgdi2jcvi.py -h
+Each function and usage can view help information using the `-h` parameter.
 
+```
 usage: wgdi2jcvi.py [-h] {blast2anchor,gff2bed,block2simple} ...
 
 Process collinearity file, convert GFF to BED, or generate anchors from BLAST results.
@@ -39,9 +39,7 @@ positional arguments:
 ```
 
 ### Usage 1 :wgdi gff to jcvi bed
-```
-python wgdi2jcvi.py gff2bed -h
-                           
+```                           
 usage: wgdi2jcvi.py gff2bed [-h] -gff input_gff_file -bed output_bed_file
 
 options:
@@ -56,8 +54,6 @@ python wgdi2jcvi.py gff2bed -gff coca_gff -bed coca.bed
 
 ### Usage 2 :blast to jcvi anchor
 ```
-python wgdi2jcvi.py blast2anchor -h
-
 usage: wgdi2jcvi.py blast2anchor [-h] -c collinearity_file -b blast_file -o output_anchor_file
 
 options:
