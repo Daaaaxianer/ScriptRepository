@@ -87,4 +87,15 @@ python wgdi2jcvi.py block2simple -c coca_schi.collinearity.txt -o coca_schi.simp
 
 ```
 
+## Function Four：WGDI Blockinfo to Circos link file
+
+Generate Circos link file using WGDI's Blockinfo file
+
+```
+# example
+
+python wgdi_bkinfo_to_circos_link.py coca.new.gff coca_coca.blockinfo.notandem.csv coca_coca_circos_links.txt
+
+```
+
 
