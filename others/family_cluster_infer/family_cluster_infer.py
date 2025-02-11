@@ -105,7 +105,8 @@ def run_family2cluster(args, output_dir):
                 chr_ = row['chr']
                 end = row['end']
                 data.append((id_, fid, chr_, end))
-        sorted_data = sorted(data, key=lambda x: (x[2], x[3]))
+        # 按照 chr 和 end 进行排序
+        sorted_data = sorted(data, key=lambda x: (x[2], int(x[3])))
         return sorted_data
 
     sorted_gff = sort_by_chr_and_end(gff_df, spId2fid)
@@ -131,7 +132,7 @@ def run_family2cluster(args, output_dir):
                         cluster_name = f"{prefix}_{chr_}_cluster_{cluster_count[chr_]}"
                         cluster_count[chr_] += 1
                     else:
-                        cluster_name = f"{prefix}_clusterUn"
+                        cluster_name = "clusterUn"
                     for id__, fid__, _ in current_cluster[chr_]:
                         cluster_dict[id__] = cluster_name
                         cluster_name_dict[id__] = (fid__, cluster_name)
@@ -141,27 +142,31 @@ def run_family2cluster(args, output_dir):
             if len(cluster) >= min_cluster_size:
                 cluster_name = f"{prefix}_{chr_}_cluster_{cluster_count[chr_]}"
             else:
-                cluster_name = f"{prefix}_clusterUn"
+                cluster_name = "clusterUn"
             for id__, fid__, _ in cluster:
                 cluster_dict[id__] = cluster_name
                 cluster_name_dict[id__] = (fid__, cluster_name)
 
         return cluster_dict, cluster_name_dict
 
-    # 使用 -sp 参数作为前缀
     spId2cluster, spClusterDetails = cluster_ids(sorted_gff, sp_prefix, window_size=window_size,
                                                  min_cluster_size=min_cluster_size)
 
     # 输出结果
-    def output_clusters(cluster_details, output_file):
+    def output_clusters(cluster_details, output_file, gff_df):
         with open(output_file, 'w') as f:
             f.write("id\tfid\tcluster\n")
-            for id_, (fid_, cluster) in cluster_details.items():
+            # 按照 chr 和 end 排序输出
+            sorted_cluster_details = sorted(cluster_details.items(), key=lambda x: (
+                gff_df[gff_df['id'] == x[0]]['chr'].iloc[0],
+                gff_df[gff_df['id'] == x[0]]['end'].iloc[0]
+            ))
+            for id_, (fid_, cluster) in sorted_cluster_details:
                 f.write(f"{id_}\t{fid_}\t{cluster}\n")
         print(f"File generated: {output_file}")
 
-    output_file = f"{output_dir}/{sp_prefix}.id2cluster.txt"
-    output_clusters(spClusterDetails, output_file)
+    output_file = f"{output_dir}/{sp_prefix}.Id2cluster.txt"
+    output_clusters(spClusterDetails, output_file, gff_df)
 
 
 # 运行 cluster2block 功能
