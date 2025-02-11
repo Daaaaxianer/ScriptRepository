@@ -40,9 +40,9 @@ cluster2block:
 
 ## Function family2cluster：Calculate the family cluster based on physical location
 
-input：Left.gff, Left.id.txt, Right.gff, Right_id.txt
+**Input**：`Left.gff`, `Left.id.txt`, `Right.gff`, `Right_id.txt`
 
-ouput: spLeftId2cluster.txt and spRightId2cluster.txt
+**Ouput**: `spLeftId2cluster.txt` and `spRightId2cluster.txt`
 
 ```
 # example
@@ -51,9 +51,9 @@ python family_cluster_infer.py --family2cluster -lgff Cume.new.gff -rgff Bhhi.ne
 
 ## Function cluster2block：Connecting clusters and collinear blocks
 
-input：spLeftId2cluster.txt ，spRightId2cluster.txt and Cume_Bhhi.block.rr.txt
+**Input**：`spLeftId2cluster.txt`, `spRightId2cluster.txt` and `Cume_Bhhi.block.rr.txt`
 
-output:Left_Right.block.rr.txt
+**Output**:`Left_Right.block.rr.txt`
 
 ```
 # example
