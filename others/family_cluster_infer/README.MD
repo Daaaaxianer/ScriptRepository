@@ -5,27 +5,26 @@
 using the -h parameter for help.
 
 ```
-usage: family_cluster_infer.py [-h] -odir ODIR [--window_size WINDOW_SIZE] [--min_cluster_size MIN_CLUSTER_SIZE]
-                               [-lgff LGFF] [-rgff RGFF] [-lid LID] [-rid RID] [--family2cluster] [-lcluster LCLUSTER]
+usage: family_cluster_infer.py [-h] [-odir ODIR] [-gff GFF] [-idfile IDFILE] [-window_size WINDOW_SIZE]
+                               [-min_cluster_size MIN_CLUSTER_SIZE] [-sp SP] [--family2cluster] [-lcluster LCLUSTER]
                                [-rcluster RCLUSTER] [-bkfile BKFILE] [--cluster2block]
 
 Process GFF and block files for clustering.
 
 options:
   -h, --help            show this help message and exit
-  -odir ODIR            Directory path for output files
-  --window_size WINDOW_SIZE
-                        Sliding window size in base pairs (default: 2e6)
-  --min_cluster_size MIN_CLUSTER_SIZE
-                        Minimum cluster size (default: 3)
+  -odir ODIR            Directory path for output files (default: current directory)
 
 family2cluster:
   Arguments for family to cluster
 
-  -lgff LGFF            Path to Left.new.gff.txt file
-  -rgff RGFF            Path to Right.new.gff.txt file
-  -lid LID              Path to Left_id.txt file
-  -rid RID              Path to Right_id.txt file
+  -gff GFF              Path to the GFF file (e.g., Left.new.gff.txt)
+  -idfile IDFILE        Path to the ID file (e.g., Left_id.txt)
+  -window_size WINDOW_SIZE
+                        Sliding window size in base pairs (default: 2e6)
+  -min_cluster_size MIN_CLUSTER_SIZE
+                        Minimum cluster size (default: 3)
+  -sp SP                Output file prefix (default: sp)
   --family2cluster      Run family to cluster functionality
 
 cluster2block:
@@ -40,24 +39,33 @@ cluster2block:
 
 ## Function family2cluster：Calculate the family cluster based on physical location
 
-**Input**：`Left.gff`, `Left.id.txt`, `Right.gff`, `Right_id.txt`
+**Input**：`Left.gff`, `Left.id.txt`
 
-**Ouput**: `spLeftId2cluster.txt` and `spRightId2cluster.txt`
+**Ouput**: `sp.id2cluster.txt`
 
 ```
-# example
-python family_cluster_infer.py --family2cluster -lgff Cume.new.gff -rgff Bhhi.new.gff -lid Cume_id.txt -rid Bhhi_id.txt -odir .
+# default example1
+python family_cluster_infer.py --family2cluster -gff Cume.new.gff -idfile Cume_id.txt -sp cume
+
+# default example2
+python family_cluster_infer.py --family2cluster -gff Bhhi.new.gff -idfile Bhhi_id.txt -sp bhhi
+
+# set -window_size,-min_cluster_size and -odir
+python family_cluster_infer.py --family2cluster -gff Cume.new.gff -idfile Cume_id.txt -sp cume -window_size 3e6 -min_cluster_size 4 -odir ./output
 ```
 
 ## Function cluster2block：Connecting clusters and collinear blocks
 
-**Input**：`spLeftId2cluster.txt`, `spRightId2cluster.txt` and `Cume_Bhhi.block.rr.txt`
+**Input**：`spLeft.Id2cluster.txt`, `spRight.Id2cluster.txt` and `spLeft_spRight.block.rr.txt`
 
 **Output**:`Left_Right.block.rr.txt`
 
 ```
-# example
-python family_cluster_infer.py --cluster2block -lcluster spLeftId2cluster.txt -rcluster spRightId2cluster.txt -bkfile Cume_Bhhi.block.rr.txt -odir .
+# default example
+python family_cluster_infer.py --cluster2block -lcluster cume.id2cluster.txt -rcluster bhhi.id2cluster.txt -bkfile Cume_Bhhi.block.rr.txt
+
+# set -odir
+python family_cluster_infer.py --cluster2block -lcluster cume.id2cluster.txt -rcluster bhhi.id2cluster.txt -bkfile Cume_Bhhi.block.rr.txt -odir ./output
 ```
 
 
