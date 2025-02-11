@@ -3,57 +3,71 @@
 # Time      :2025/2/10 
 # Author    :xian
 
-
 import pandas as pd
 import re
 import argparse
-
-import pandas as pd
-import re
-import argparse
+import os  # 引入 os 模块
 
 
 # 添加命令行参数解析
 def parse_args():
     parser = argparse.ArgumentParser(description="Process GFF and block files for clustering.")
-    parser.add_argument("--right_gff", type=str, required=True, help="Path to Right.new.gff.txt file")
-    parser.add_argument("--left_gff", type=str, required=True, help="Path to Left.new.gff.txt file")
-    parser.add_argument("--right_id", type=str, required=True, help="Path to Right_id.txt file")
-    parser.add_argument("--left_id", type=str, required=True, help="Path to Left_id.txt file")
-    parser.add_argument("--block_file", type=str, required=True, help="Path to Left_Right.block.rr.txt file")
-    parser.add_argument("--window_size", type=float, default=2e6,
-                        help="Sliding window size in base pairs (default: 2e6)")
+    
+    # 公共参数
+    parser.add_argument("-odir", type=str, required=True, help="Directory path for output files")
+    parser.add_argument("--window_size", type=float, default=2e6, help="Sliding window size in base pairs (default: 2e6)")
     parser.add_argument("--min_cluster_size", type=int, default=3, help="Minimum cluster size (default: 3)")
-    parser.add_argument("--output_dir", type=str, required=True, help="Directory path for output files")
+
+    # 定义 --family2cluster 功能所需的参数
+    family2cluster = parser.add_argument_group('family2cluster', 'Arguments for family to cluster')
+    family2cluster.add_argument("-lgff", type=str, required=False, help="Path to Left.new.gff.txt file")
+    family2cluster.add_argument("-rgff", type=str, required=False, help="Path to Right.new.gff.txt file")
+    family2cluster.add_argument("-lid", type=str, required=False, help="Path to Left_id.txt file")
+    family2cluster.add_argument("-rid", type=str, required=False, help="Path to Right_id.txt file")
+    family2cluster.add_argument("--family2cluster", action="store_true", help="Run family to cluster functionality")
+
+    # 定义 --cluster2block 功能所需的参数
+    cluster2block = parser.add_argument_group('cluster2block', 'Arguments for cluster to block')
+    cluster2block.add_argument("-lcluster", type=str, required=False, help="Path to spLeftId2cluster.txt file")
+    cluster2block.add_argument("-rcluster", type=str, required=False, help="Path to spRightId2cluster.txt file")
+    cluster2block.add_argument("-bkfile", type=str, required=False, help="Path to Left_Right.block.rr.txt file")
+    cluster2block.add_argument("--cluster2block", action="store_true", help="Run cluster to block functionality")
+
     return parser.parse_args()
 
 
 # 主函数
 def main():
-    # 解析命令行参数
     args = parse_args()
 
-    print("Starting script with the following parameters:")
-    print(f"Right GFF File: {args.right_gff}")
-    print(f"Left GFF File: {args.left_gff}")
-    print(f"Right ID File: {args.right_id}")
-    print(f"Left ID File: {args.left_id}")
-    print(f"Block File: {args.block_file}")
-    print(f"Output Directory: {args.output_dir}")
-    print(f"Sliding Window Size: {args.window_size} bp")
-    print(f"Minimum Cluster Size: {args.min_cluster_size}")
+    # 检查并创建输出目录
+    if not os.path.exists(args.odir):
+        os.makedirs(args.odir)
+        print(f"Output directory '{args.odir}' created.")
 
-    # 1. 读取 Right.new.gff.txt 文件
+    if args.family2cluster:
+        print("Running family2cluster functionality...")
+        run_family2cluster(args)
+    elif args.cluster2block:
+        print("Running cluster2block functionality...")
+        run_cluster2block(args)
+    else:
+        print("Please specify either --family2cluster or --cluster2block.")
+
+
+# 运行 family2cluster 功能
+def run_family2cluster(args):
+    if not all([args.lgff, args.rgff, args.lid, args.rid]):
+        print("Error: For --family2cluster, you must provide -lgff, -rgff, -lid, and -rid.")
+        return
+
+    # 读取 GFF 文件
     right_gff_cols = ['chr', 'start', 'end', 'strand', 'oldid', 'id', 'order']
-    right_gff_df = pd.read_csv(args.right_gff, sep='\t', header=None, names=right_gff_cols)
-    print("Right GFF file loaded successfully.")
-
-    # 2. 读取 Left.new.gff.txt 文件
+    right_gff_df = pd.read_csv(args.rgff, sep='\t', header=None, names=right_gff_cols)
     left_gff_cols = ['chr', 'start', 'end', 'strand', 'oldid', 'id', 'order']
-    left_gff_df = pd.read_csv(args.left_gff, sep='\t', header=None, names=left_gff_cols)
-    print("Left GFF file loaded successfully.")
+    left_gff_df = pd.read_csv(args.lgff, sep='\t', header=None, names=left_gff_cols)
 
-    # 3. 创建 GFF 类
+    # 创建 GFF 类
     class GFF:
         def __init__(self, id, chr, start, end, strand, oldid, order):
             self.id = id
@@ -72,143 +86,114 @@ def main():
                          for _, row in right_gff_df.iterrows()]
     left_gff_objects = [GFF(row['id'], row['chr'], row['start'], row['end'], row['strand'], row['oldid'], row['order'])
                         for _, row in left_gff_df.iterrows()]
-    print("GFF objects created successfully.")
 
-    # 4. 读取 Right_id.txt 并创建字典 spRightId2fid
-    right_id_df = pd.read_csv(args.right_id, sep='\t', header=None, names=['id', 'fid'])
+    # 读取 ID 文件并创建字典
+    right_id_df = pd.read_csv(args.rid, sep='\t', header=None, names=['id', 'fid'])
     spRightId2fid = right_id_df.set_index('id')['fid'].to_dict()
-    print("Right ID file processed successfully.")
-
-    # 5. 读取 Left_id.txt 并创建字典 spLeftId2fid
-    left_id_df = pd.read_csv(args.left_id, sep='\t', header=None, names=['id', 'fid'])
+    left_id_df = pd.read_csv(args.lid, sep='\t', header=None, names=['id', 'fid'])
     spLeftId2fid = left_id_df.set_index('id')['fid'].to_dict()
-    print("Left ID file processed successfully.")
 
-    # 6. 确保文件中的 id 存在于对应的 .gff 文件中
-    assert all(id_ in right_gff_df['id'].values for id_ in
-               spRightId2fid.keys()), "Some IDs in Right_id.txt are not present in Right.new.gff.txt"
-    assert all(id_ in left_gff_df['id'].values for id_ in
-               spLeftId2fid.keys()), "Some IDs in Left_id.txt are not present in Left.new.gff.txt"
-    print("ID validation completed successfully.")
+    # 验证 ID 是否存在
+    assert all(id_ in right_gff_df['id'].values for id_ in spRightId2fid.keys()), "Some IDs in Right_id.txt are not present in Right.new.gff.txt"
+    assert all(id_ in left_gff_df['id'].values for id_ in spLeftId2fid.keys()), "Some IDs in Left_id.txt are not present in Left.new.gff.txt"
 
-    # 7. 按照 id.chr 和 id.end 排序
-    def sort_by_chr_and_end(gff_objects, id_to_fid):
-        sorted_list = []
-        chr_groups = {}
+    # 排序
+    def sort_by_chr_and_end(gff_df, id_to_fid):
+        data = []
+        for id_ in id_to_fid.keys():
+            if id_ in gff_df['id'].values:
+                row = gff_df[gff_df['id'] == id_].iloc[0]
+                fid = id_to_fid[id_]
+                chr_ = row['chr']
+                end = row['end']
+                data.append((id_, fid, chr_, end))
+        sorted_data = sorted(data, key=lambda x: (x[2], x[3]))
+        return sorted_data
 
-        # 将 id 对应的 fid 添加到 GFF 对象中
-        for obj in gff_objects:
-            if obj.id in id_to_fid:
-                fid = id_to_fid[obj.id]
-                if obj.chr not in chr_groups:
-                    chr_groups[obj.chr] = []
-                chr_groups[obj.chr].append((obj, fid))
+    sorted_spRight = sort_by_chr_and_end(right_gff_df, spRightId2fid)
+    sorted_spLeft = sort_by_chr_and_end(left_gff_df, spLeftId2fid)
 
-        # 对每个染色体组按 end 排序
-        for chr_, group in chr_groups.items():
-            sorted_group = sorted(group, key=lambda x: x[0].end)
-            sorted_list.extend(sorted_group)
-
-        return sorted_list
-
-    sorted_spRight = sort_by_chr_and_end(right_gff_objects, spRightId2fid)
-    sorted_spLeft = sort_by_chr_and_end(left_gff_objects, spLeftId2fid)
-    print("Sorting by chromosome and end position completed successfully.")
-
-    # 8. 使用滑动窗口进行 cluster 划分
+    # 聚类
     def cluster_ids(sorted_list, prefix, window_size=2e6, min_cluster_size=3):
         cluster_dict = {}
         cluster_name_dict = {}
         current_cluster = {}
         cluster_count = {}
 
-        for i, (gff_obj, fid) in enumerate(sorted_list):
-            chr_ = gff_obj.chr
-            end = gff_obj.end
-
+        for i, (id_, fid, chr_, end) in enumerate(sorted_list):
             if chr_ not in cluster_count:
                 cluster_count[chr_] = 1
-
             if chr_ not in current_cluster:
-                current_cluster[chr_] = [(gff_obj.id, fid, end)]
+                current_cluster[chr_] = [(id_, fid, end)]
             else:
                 prev_end = current_cluster[chr_][-1][2]
-                if end - prev_end <= window_size:  # 使用滑动窗口大小作为参数
-                    current_cluster[chr_].append((gff_obj.id, fid, end))
+                if end - prev_end <= window_size:
+                    current_cluster[chr_].append((id_, fid, end))
                 else:
-                    # 检查当前 cluster 是否满足最小 size
                     if len(current_cluster[chr_]) >= min_cluster_size:
                         cluster_name = f"{prefix}{chr_}_cluster_{cluster_count[chr_]}"
                         cluster_count[chr_] += 1
                     else:
                         cluster_name = "clusterUn"
+                    for id__, fid__, _ in current_cluster[chr_]:
+                        cluster_dict[id__] = cluster_name
+                        cluster_name_dict[id__] = (fid__, cluster_name)
+                    current_cluster[chr_] = [(id_, fid, end)]
 
-                    # 更新字典
-                    for id_, fid_, _ in current_cluster[chr_]:
-                        cluster_dict[id_] = cluster_name
-                        cluster_name_dict[id_] = (fid_, cluster_name)
-
-                    # 初始化新的 cluster
-                    current_cluster[chr_] = [(gff_obj.id, fid, end)]
-
-        # 处理最后一个 cluster
-        if current_cluster:
-            chr_ = list(current_cluster.keys())[0]
-            if len(current_cluster[chr_]) >= min_cluster_size:
+        for chr_, cluster in current_cluster.items():
+            if len(cluster) >= min_cluster_size:
                 cluster_name = f"{prefix}{chr_}_cluster_{cluster_count[chr_]}"
             else:
                 cluster_name = "clusterUn"
-
-            for id_, fid_, _ in current_cluster[chr_]:
-                cluster_dict[id_] = cluster_name
-                cluster_name_dict[id_] = (fid_, cluster_name)
+            for id__, fid__, _ in cluster:
+                cluster_dict[id__] = cluster_name
+                cluster_name_dict[id__] = (fid__, cluster_name)
 
         return cluster_dict, cluster_name_dict
 
-    # 调用 cluster_ids 函数
     spRightId2cluster, spRightClusterDetails = cluster_ids(sorted_spRight, "Right_", window_size=args.window_size,
                                                            min_cluster_size=args.min_cluster_size)
     spLeftId2cluster, spLeftClusterDetails = cluster_ids(sorted_spLeft, "Left_", window_size=args.window_size,
                                                          min_cluster_size=args.min_cluster_size)
-    print("Clustering completed successfully.")
 
-    # 输出结果到文件
+    # 输出结果
     def output_clusters(cluster_details, output_file):
         with open(output_file, 'w') as f:
             f.write("id\tfid\tcluster\n")
             for id_, (fid_, cluster) in cluster_details.items():
                 f.write(f"{id_}\t{fid_}\t{cluster}\n")
+        print(f"File generated: {output_file}")  # 添加提示信息
 
-    output_clusters(spRightClusterDetails, f"{args.output_dir}/spRightId2cluster.txt")
-    output_clusters(spLeftClusterDetails, f"{args.output_dir}/spLeftId2cluster.txt")
-    print("Cluster results saved to spRightId2cluster.txt and spLeftId2cluster.txt.")
+    output_clusters(spRightClusterDetails, f"{args.odir}/spRightId2cluster.txt")
+    output_clusters(spLeftClusterDetails, f"{args.odir}/spLeftId2cluster.txt")
 
-    # 9. 定义 colinearBlock 函数
+
+# 运行 cluster2block 功能
+def run_cluster2block(args):
+    if not all([args.lcluster, args.rcluster, args.bkfile]):
+        print("Error: For --cluster2block, you must provide -lcluster, -rcluster, and -bkfile.")
+        return
+
+    # 加载簇文件
+    spLeftId2cluster = load_cluster_file(args.lcluster)
+    spRightId2cluster = load_cluster_file(args.rcluster)
+
+    # 处理块文件
     def colinearBlock(file_path):
-        # 读取文件并过滤行
         with open(file_path, 'r') as f:
             lines = [line.strip() for line in f.readlines() if line.strip()]
-
         filtered_lines = []
         block_num = None
-
         for line in lines:
             if line.startswith('the'):
-                # 使用正则表达式提取 the 前的数字
                 match = re.match(r'the (\d+)th path', line)
                 if match:
-                    block_num = int(match.group(1))  # 提取数字
-            elif line.startswith('overlap with block'):
-                # 跳过以 "overlap with block" 开头的行
-                continue
-            elif line.startswith('+') or line.startswith('>'):
-                # 跳过以 "+" 或 ">" 开头的行
+                    block_num = int(match.group(1))
+            elif line.startswith('overlap with block') or line.startswith('+') or line.startswith('>'):
                 continue
             else:
-                # 保留其他行，并将当前 block_num 与该行关联
                 filtered_lines.append((line, block_num))
 
-        # 创建 DataFrame
         data = []
         for line, block_num in filtered_lines:
             parts = line.split()
@@ -220,29 +205,35 @@ def main():
         df = pd.DataFrame(data, columns=['leftId', 'rightId', 'blockNum'])
         return df
 
-    # 10. 更新新数据框
+    block_df = colinearBlock(args.bkfile)
+
+    # 更新数据框
     def update_dataframe_with_clusters(df, spLeftId2cluster, spRightId2cluster):
-        # 添加 leftCluster 和 rightCluster 列
         df['leftCluster'] = df['leftId'].apply(lambda x: spLeftId2cluster.get(x, ''))
         df['rightCluster'] = df['rightId'].apply(lambda x: spRightId2cluster.get(x, ''))
         return df
 
-    # 11. 输出更新后的数据框到新文件
+    updated_block_df = update_dataframe_with_clusters(block_df, spLeftId2cluster, spRightId2cluster)
+
+    # 保存更新后的数据框
     def save_updated_dataframe(df, output_file):
         df.to_csv(output_file, sep='\t', index=False)
+        print(f"File generated: {output_file}")  # 添加提示信息
 
-    # 调用 colinearBlock 函数处理 Left_Right.block.rr.txt 文件
-    block_df = colinearBlock(args.block_file)
-    print("Block file processed successfully.")
+    save_updated_dataframe(updated_block_df, f"{args.odir}/left_right_block_family_cluster.txt")
 
-    # 更新数据框
-    updated_block_df = update_dataframe_with_clusters(block_df, spLeftId2cluster, spRightId2cluster)
-    print("Dataframe updated with clusters successfully.")
 
-    # 保存更新后的数据框到文件
-    save_updated_dataframe(updated_block_df, f"{args.output_dir}/left_right_block_family_cluster.txt")
-    print("Updated block data saved to left_right_block_family_cluster.txt.")
-    print("Script execution completed successfully.")
+# 加载簇文件
+def load_cluster_file(file_path):
+    cluster_dict = {}
+    with open(file_path, 'r') as f:
+        next(f)  # 跳过表头
+        for line in f:
+            parts = line.strip().split('\t')
+            if len(parts) == 3:
+                id_, fid, cluster = parts
+                cluster_dict[id_] = cluster
+    return cluster_dict
 
 
 if __name__ == "__main__":
