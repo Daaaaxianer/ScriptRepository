@@ -84,7 +84,7 @@ options:
 ```
 
 
-## Usage 4：WGDI Blockinfo to block pair file
+## Usage 4：WGDI collinearity to block pair file
 
 Extract gene pairs of certain blocks from a collinearity file
 
@@ -100,8 +100,6 @@ options:
   -o output_pair_file   Path to the output pair file.
 
 ```
-
-
 ```
 # example
 python wgdi2jcvi.py block2simple -c coca_schi.collinearity.txt -o coca_schi.pair --filter coca_schi.filter_blockid.txt
