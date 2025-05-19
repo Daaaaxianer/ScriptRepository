@@ -172,4 +172,4 @@ if __name__ == "__main__":
     nuc_fasta = args.nucleotide_file if args.nucleotide_file.lower() != 'none' else None
     prot_fasta = args.protein_file if args.protein_file.lower() != 'none' else None
 
-    process_sequences(nuc_fasta, prot_fasta, args.output_directory, args.genetic_code_num)
+    process_sequences(nuc_fasta, prot_fasta, args.output_directory, args.genetic_table_num)
