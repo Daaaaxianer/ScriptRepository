@@ -27,15 +27,16 @@ Generate input files for JCVI using the input or output results of WGDI
 Each function and usage can view help information using the `-h` parameter.
 
 ```
-usage: wgdi2jcvi.py [-h] {blast2anchor,gff2bed,block2simple} ...
+usage: wgdi2jcvi.py [-h] {blast2anchor,gff2bed,block2simple,block2pair} ...
 
 Process collinearity file, convert GFF to BED, or generate anchors from BLAST results.
 
 positional arguments:
-  {blast2anchor,gff2bed,block2simple}
+  {blast2anchor,gff2bed,block2simple,block2pair}
     blast2anchor        Generate anchor file based on collinearity and BLAST results.
     gff2bed             Convert GFF file to BED format.
     block2simple        Process collinearity file and output a simple summary.
+    block2pair          Extract gene pairs of certain blocks from a collinearity file.
 ```
 
 ### Usage 1 :wgdi gff to jcvi bed
@@ -81,9 +82,29 @@ options:
   --filter filter_blockid_file
                         [option] Path to the filter block ID file.
 ```
+
+
+## Usage 4：WGDI Blockinfo to block pair file
+
+Extract gene pairs of certain blocks from a collinearity file
+
+```
+usage: wgdi2jcvi.py block2pair [-h] -c input_collinearity_file [--filter filter_blockid_file] -o output_pair_file
+
+options:
+  -h, --help            show this help message and exit
+  -c input_collinearity_file
+                        Path to the input collinearity file.
+  --filter filter_blockid_file
+                        Path to the filter block ID file.
+  -o output_pair_file   Path to the output pair file.
+
+```
+
+
 ```
 # example
-python wgdi2jcvi.py block2simple -c coca_schi.collinearity.txt -o coca_schi.simple --filter coca_schi.filter_blockid.txt
+python wgdi2jcvi.py block2simple -c coca_schi.collinearity.txt -o coca_schi.pair --filter coca_schi.filter_blockid.txt
 
 ```
 
@@ -97,5 +118,8 @@ Generate Circos link file using WGDI's Blockinfo file
 python wgdi_bkinfo_to_circos_link.py coca.new.gff coca_coca.blockinfo.notandem.csv coca_coca_circos_links.txt
 
 ```
+
+
+
 
 
