@@ -7,7 +7,7 @@ import re
 from Bio import SeqIO
 from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
-from Bio.SeqUtils import GC
+# from Bio.SeqUtils import GC
 from Bio.SeqUtils import GC123
 import sys
 import argparse
