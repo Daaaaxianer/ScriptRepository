@@ -87,6 +87,15 @@ def save_alignment_summary_with_pandas(alignments, output_filepath):
 
     df.to_csv(output_filepath, sep='\t', header=False, index=False)
 
+def save_alignment_pairs(alignments, output_filepath):
+    data = []
+    for alignment in alignments:
+        for bkpair in alignment.bkpair:
+            data.append([bkpair['query_id'], bkpair['subject_id']])
+
+    df = pd.DataFrame(data)
+
+    df.to_csv(output_filepath, sep='\t', header=False, index=False)
 
 def gff2bed(input_file, output_file):
     df = pd.read_csv(input_file, sep='\t', header=None)
@@ -165,6 +174,15 @@ def main():
     parser_block2simple.add_argument('--filter', metavar='filter_blockid_file',
                                      help='Path to the filter block ID file.')
 
+    # --gff2pair
+    parser_block2pair = subparsers.add_parser('block2pair', help='Extract gene pairs of certain blocks from a collinearity file.')
+    parser_block2pair.add_argument('-c', required=True, metavar='input_collinearity_file',
+                                     help='Path to the input collinearity file.')
+    parser_block2pair.add_argument('--filter', metavar='filter_blockid_file',
+                                     help='Path to the filter block ID file.')
+    parser_block2pair.add_argument('-o', required=True, metavar='output_pair_file',
+                                     help='Path to the output pair file.')
+
     args = parser.parse_args()
 
     if args.command == 'blast2anchor':
@@ -177,6 +195,10 @@ def main():
         filter_filepath = args.filter if args.filter else None
         alignments = parse_file(args.c, filter_filepath)
         save_alignment_summary_with_pandas(alignments, args.o)
+    elif args.command == 'block2pair':
+        filter_filepath = args.filter if args.filter else None
+        alignments = parse_file(args.c, filter_filepath)
+        save_alignment_pairs(alignments, args.o)
     else:
         print("Please specify one of the commands: blast2anchor, gff2bed, block2simple.")
 
