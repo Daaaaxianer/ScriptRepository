@@ -73,27 +73,6 @@ python split_fasta.py -fa sl.4.0.cds.fa -odir iout
 
 ## del_seq.py
 
-* **Function 1**: delete sequence sequences by length (--min_length)
-
-```
-## Delete sequences with a length of less than 200
-python del_seq.py cds_file pep_file --min_length 200
-
-## Delete sequences with a length of less than 100 and specify the output filename
-python del_seq.py cds_file pep_file --min_length 100 --cds_output xxx.less100.cds.fasta --pep_output xxx.less100.pep.fasta
-```
-
-* **Function 2**: delete sequence sequences by id (--exclude_genes)
-
-If this parameter is used, the --min_length parameter will be ignored.
-```
-## Remove the genes listed with their IDs from the file.
-python del_seq.py cds_file pep_file --exclude_genes xxx.id.txt
-
-## Remove the genes listed with their IDs from the file and specify the output filename.
-python del_seq.py cds_file pep_file --exclude_genes xxx.id.txt --cds_output xxx.removeid.cds.fasta --pep_output xxx.removeid.pep.fasta
-```
-  
 ```
 usage: del_seq.py [-h] [--min_length MIN_LENGTH] [--exclude_genes EXCLUDE_GENES] [--cds_output CDS_OUTPUT]
                   [--pep_output PEP_OUTPUT]
@@ -116,6 +95,29 @@ options:
   --pep_output PEP_OUTPUT
                         输出的PEP序列文件名(默认filtered_pep.fasta)
 ```
+
+* **Function 1**: delete sequence sequences by length (--min_length)
+
+```
+## Delete sequences with a length of less than 200
+python del_seq.py cds_file pep_file --min_length 200
+
+## Delete sequences with a length of less than 100 and specify the output filename
+python del_seq.py cds_file pep_file --min_length 100 --cds_output xxx.less100.cds.fasta --pep_output xxx.less100.pep.fasta
+```
+
+* **Function 2**: delete sequence sequences by id (--exclude_genes)
+
+If this parameter is used, the --min_length parameter will be ignored.
+```
+## Remove the genes listed with their IDs from the file.
+python del_seq.py cds_file pep_file --exclude_genes xxx.id.txt
+
+## Remove the genes listed with their IDs from the file and specify the output filename.
+python del_seq.py cds_file pep_file --exclude_genes xxx.id.txt --cds_output xxx.removeid.cds.fasta --pep_output xxx.removeid.pep.fasta
+```
+  
+
 
 
 
