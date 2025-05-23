@@ -71,5 +71,53 @@ python split_fasta.py -fa sl.4.0.cds.fa -odir iout
 
 ```
 
+## del_seq.py
+
+* **Function 1**: delete sequence sequences by length (--min_length)
+
+```
+## Delete sequences with a length of less than 200
+python del_seq.py cds_file pep_file --min_length 200
+
+## Delete sequences with a length of less than 100 and specify the output filename
+python del_seq.py cds_file pep_file --min_length 100 --cds_output xxx.less100.cds.fasta --pep_output xxx.less100.pep.fasta
+```
+
+* **Function 2**: delete sequence sequences by id (--exclude_genes)
+
+If this parameter is used, the --min_length parameter will be ignored.
+```
+## Remove the genes listed with their IDs from the file.
+python del_seq.py cds_file pep_file --exclude_genes xxx.id.txt
+
+## Remove the genes listed with their IDs from the file and specify the output filename.
+python del_seq.py cds_file pep_file --exclude_genes xxx.id.txt --cds_output xxx.removeid.cds.fasta --pep_output xxx.removeid.pep.fasta
+```
+  
+```
+usage: del_seq.py [-h] [--min_length MIN_LENGTH] [--exclude_genes EXCLUDE_GENES] [--cds_output CDS_OUTPUT]
+                  [--pep_output PEP_OUTPUT]
+                  cds_file pep_file
+
+过滤CDS和PEP序列，可按长度过滤或排除指定基因
+
+positional arguments:
+  cds_file              输入的CDS序列文件(FASTA格式)
+  pep_file              输入的PEP序列文件(FASTA格式)
+
+options:
+  -h, --help            show this help message and exit
+  --min_length MIN_LENGTH
+                        最小长度阈值(默认200)，当不使用--exclude_genes时有效
+  --exclude_genes EXCLUDE_GENES
+                        包含要排除基因列表的文件(单列基因名)，如果使用此参数，将忽略--min_length
+  --cds_output CDS_OUTPUT
+                        输出的CDS序列文件名(默认filtered_cds.fasta)
+  --pep_output PEP_OUTPUT
+                        输出的PEP序列文件名(默认filtered_pep.fasta)
+```
+
+
+
 
 
